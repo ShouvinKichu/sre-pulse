@@ -9,7 +9,6 @@ router = APIRouter(prefix="/services", tags=["services"])
 _services_db: dict[str, dict] = {}
 _next_id = 1
 
-
 @router.post("", response_model=ServiceResponse, status_code=status.HTTP_201_CREATED)
 def register_service(service: ServiceCreate):
     """
