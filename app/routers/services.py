@@ -1,45 +1,58 @@
-from fastapi import APIRouter, HTTPException, status
-from datetime import datetime, timezone
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.db import get_db
+from app.models.service import Service
 from app.schemas.service import ServiceCreate, ServiceResponse
 
 router = APIRouter(prefix="/services", tags=["services"])
 
 
-_services_db: dict[str, dict] = {}
-_next_id = 1
 
 @router.post("", response_model=ServiceResponse, status_code=status.HTTP_201_CREATED)
-def register_service(service: ServiceCreate):
-    
-    global _next_id
+def register_service(
+    service: ServiceCreate,
+    db: Session = Depends(get_db),
+):
+    existing = db.query(Service).filter(Service.name == service.name).first()
 
-    if service.name in _services_db:
+    if existing:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail=f"Service '{service.name}' is already registered.",
+            detail="Service already exists.",
         )
 
-    record = {
-        "id": _next_id,
-        "name": service.name,
-        "description": service.description,
-        "created_at": datetime.now(timezone.utc),
-    }
-    _services_db[service.name] = record
-    _next_id += 1
-    return record
+    new_service = Service(
+        name=service.name,
+        description=service.description,
+    )
+
+    db.add(new_service)
+    db.commit()
+    db.refresh(new_service)
+
+    return new_service
 
 
 @router.get("", response_model=list[ServiceResponse])
-def list_services():
-    
-    return list(_services_db.values())
+def list_services(
+    db: Session = Depends(get_db),
+):
+    return db.query(Service).all()
 
 
 @router.delete("/{name}", status_code=status.HTTP_204_NO_CONTENT)
-def remove_service(name: str):
-    
-    if name not in _services_db:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Service not found.")
-    del _services_db[name]
-    return None
+def remove_service(
+    name: str,
+    db: Session = Depends(get_db),
+):
+    service = db.query(Service).filter(Service.name == name).first()
+
+    if service is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Service not found.",
+        )
+
+    db.delete(service)
+    db.commit()
