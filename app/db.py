@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URL = "postgresql://postgres:password@localhost:5432/srepulse"
+from app.config import settings
 
 engine = create_engine(
-    DATABASE_URL,
+    settings.DATABASE_URL or "",
     echo=True,
 )
 
@@ -17,6 +17,7 @@ SessionLocal = sessionmaker(
 
 class Base(DeclarativeBase):
     pass
+
 
 def get_db():
     db = SessionLocal()
