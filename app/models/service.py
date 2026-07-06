@@ -1,9 +1,15 @@
+from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy import DateTime, String, Text, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.health_checks import HealthCheck
 
 
 class Service(Base):
@@ -32,4 +38,7 @@ class Service(Base):
         server_default=func.now(),
     )
 
-    
+    health_checks: Mapped[list["HealthCheck"]] = relationship(
+        back_populates="service",
+        cascade="all, delete-orphan",
+    )
