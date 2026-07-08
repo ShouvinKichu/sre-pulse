@@ -25,6 +25,7 @@ def register_service(
     new_service = Service(
         name=service.name,
         description=service.description,
+        url=str(service.url),
     )
 
     db.add(new_service)
