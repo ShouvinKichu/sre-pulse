@@ -1,9 +1,14 @@
+from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.service import Service
 
 
 class HealthCheck(Base):
@@ -41,7 +46,6 @@ class HealthCheck(Base):
         nullable=False
     )
 
-    service = relationship(
-        "Service",
+    service: Mapped["Service"] = relationship(
         back_populates="health_checks"
     )
