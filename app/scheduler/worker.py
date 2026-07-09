@@ -5,6 +5,9 @@ from app.repositories.service_repository import ServiceRepository
 
 from app.services.health_checker import check_service
 
+from app.repositories.health_check_repository import HealthCheckRepository
+from app.models.health_checks import HealthCheck
+
 async def monitor_services():
     print("🚀 Worker started")
 
@@ -14,8 +17,9 @@ async def monitor_services():
 
             db = SessionLocal()
 
-            repo = ServiceRepository(db)
-            services = repo.get_all()
+            service_repo = ServiceRepository(db)
+            health_repo = HealthCheckRepository(db)
+            services = service_repo.get_all()
 
             print(f"Found {len(services)} services")
 
@@ -23,6 +27,16 @@ async def monitor_services():
                 print(f"Checking {service.name}...")
 
                 result = await check_service(service.url)
+
+                health_check = HealthCheck(
+                    service_id=service.id,
+                    status=result["status"],
+                    status_code=result["status_code"],
+                    response_time_ms=result["response_time_ms"],
+                    error_message=result["error_message"],
+                )
+
+                health_repo.create(health_check)
 
                 print(
                     f"{service.name}: "
@@ -32,6 +46,7 @@ async def monitor_services():
 
         except Exception as e:
             print(f"❌ Worker crashed: {e}")
+            
 
         finally:
             db.close()
