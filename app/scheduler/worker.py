@@ -8,6 +8,8 @@ from app.services.health_checker import check_service
 from app.repositories.health_check_repository import HealthCheckRepository
 from app.models.health_checks import HealthCheck
 
+from app.services.metrics_service import update_metrics
+
 async def monitor_services():
     print("🚀 Worker started")
 
@@ -37,6 +39,11 @@ async def monitor_services():
                 )
 
                 health_repo.create(health_check)
+
+                update_metrics(
+                    service.name,
+                    result,
+                )
 
                 print(
                     f"{service.name}: "

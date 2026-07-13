@@ -5,6 +5,7 @@ from app.schemas.health_check import HealthCheckResponse
 from app.repositories.service_repository import ServiceRepository
 from app.repositories.health_check_repository import HealthCheckRepository
 from app.schemas.service_stats import ServiceStatsResponse
+from app.schemas.dashboard import DashboardResponse
 
 from app.db import get_db
 from app.models.service import Service
@@ -136,3 +137,44 @@ def get_service_stats(
         latest_status_code=latest_check.status_code if latest_check else None,
         last_checked_at=latest_check.checked_at if latest_check else None,
     )
+
+
+@router.get(
+    "/dashboard",
+    response_model=list[DashboardResponse],
+)
+def get_dashboard(
+    db: Session = Depends(get_db),
+):
+    service_repo = ServiceRepository(db)
+    health_repo = HealthCheckRepository(db)
+
+    services = service_repo.get_all()
+
+    dashboard = []
+
+    for service in services:
+
+        latest = health_repo.get_latest_check(service.id)
+
+        total = health_repo.get_total_checks(service.id)
+
+        successful = health_repo.get_successful_checks(service.id)
+
+        uptime = (
+            successful / total * 100
+            if total > 0
+            else 0
+        )
+
+        dashboard.append(
+            DashboardResponse(
+                name=service.name,
+                status=latest.status if latest else None,
+                status_code=latest.status_code if latest else None,
+                response_time_ms=latest.response_time_ms if latest else None,
+                uptime_percentage=uptime,
+            )
+        )
+
+    return dashboard

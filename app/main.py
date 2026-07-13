@@ -4,6 +4,10 @@ from scalar_fastapi import get_scalar_api_reference
 from contextlib import asynccontextmanager
 import asyncio
 
+from prometheus_client import make_asgi_app
+
+metrics_app = make_asgi_app()
+
 from app.db import engine
 from app.models import Service, HealthCheck
 from app.routers import services
@@ -26,6 +30,7 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+app.mount("/metrics", metrics_app)
 
 app.include_router(services.router)
 
