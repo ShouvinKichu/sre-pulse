@@ -1,3 +1,15 @@
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
-pip install scalar-fastapi
+
+sqlalchemy==2.0.51
+alembic==1.18.5
+psycopg2-binary==2.9.12
+
+httpx==0.28.1
+
+prometheus-client==0.25.0
+
+scalar-fastapi==1.8.2
+
+python-dotenv==1.2.2
+pydantic-settings==2.14.2
