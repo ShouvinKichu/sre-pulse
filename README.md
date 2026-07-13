@@ -1,38 +1,75 @@
-# SRE Pulse
+# 🚀 SRE Pulse
 
-A system metrics dashboard API — ingest, store, and alert on service health.
-Built as a portfolio project demonstrating the full SRE/DevOps stack: FastAPI → Docker → Kubernetes (Helm) → CI/CD → Terraform → Prometheus/Grafana → ELK.
+A production-grade service monitoring platform built with FastAPI that continuously monitors website and API availability, stores historical health data, exports Prometheus metrics, and provides reliability insights for SRE and Platform Engineering workflows.
 
-## Status: Week 2, Day 1 (in progress)
+## Features
 
-### Done
-- Project structure (`app/main.py`, `routers/`, `schemas/`, `models/`, `core/`)
-- `GET /health` — liveness check
-- `POST /services` — register a service (201 / 409 on duplicate / 422 on bad input)
-- `GET /services` — list all registered services
-- `DELETE /services/{name}` — remove a service (204 / 404)
+- ✅ Register and manage services to monitor
+- ✅ Asynchronous background health checks
+- ✅ Response time & HTTP status monitoring
+- ✅ Historical health check storage
+- ✅ Service statistics (uptime, failures, average latency)
+- ✅ Dashboard API for monitoring multiple services
+- ✅ Prometheus metrics exporter
+- ✅ PostgreSQL persistence with SQLAlchemy & Alembic
+- ✅ Dockerized development environment
 
-### Not yet done (in-memory storage only — replaced in Step 3)
-- PostgreSQL persistence
-- Redis caching
-- `/metrics` ingest endpoint
-- `/alerts` threshold logic
-- API key auth
+## Tech Stack
 
-## Running locally
+- FastAPI
+- Python
+- PostgreSQL
+- SQLAlchemy
+- Alembic
+- AsyncIO
+- HTTPX
+- Prometheus
+- Docker
 
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
+## Architecture
+
+```
+                Internet
+                    │
+                    ▼
+          Async Monitoring Worker
+                    │
+          HTTP Health Checks
+                    │
+        ┌───────────┴───────────┐
+        ▼                       ▼
+   PostgreSQL            Prometheus Metrics
+        │                       │
+        ▼                       ▼
+ Historical Data         /metrics Endpoint
+        │
+        ▼
+     FastAPI APIs
 ```
 
-Visit `http://localhost:8000/docs` for interactive Swagger UI.
+## APIs
 
-## Why this structure?
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/services` | Register a service |
+| GET | `/services` | List monitored services |
+| DELETE | `/services/{name}` | Remove a service |
+| GET | `/services/{name}/history` | Health check history |
+| GET | `/services/{name}/stats` | Service statistics |
+| GET | `/dashboard` | Monitoring dashboard data |
+| GET | `/metrics` | Prometheus metrics |
 
-Routes are grouped by resource (`routers/services.py`) rather than dumped into
-`main.py`. Request and response schemas are kept separate (`ServiceCreate` vs
-`ServiceResponse`) so we never accidentally leak server-generated fields back
-into what the client is allowed to send.
+## Upcoming Features
+
+- 📊 Grafana dashboards
+- 📧 SMTP email alerts
+- 🔁 Retry & consecutive failure detection
+- 🐳 Docker Compose
+- ☸️ Kubernetes deployment
+- ☁️ Google Cloud (GKE)
+- 🏗️ Terraform Infrastructure as Code
+- ⚙️ GitHub Actions CI/CD
+
+## Status
+
+🚧 Actively under development.
