@@ -1,7 +1,7 @@
 from __future__ import annotations
 from datetime import datetime
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
@@ -42,7 +42,7 @@ class HealthCheck(Base):
 
     checked_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=datetime.utcnow,
+        default=func.now(),
         nullable=False
     )
 

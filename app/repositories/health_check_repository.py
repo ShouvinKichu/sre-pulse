@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta, UTC
+
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, delete
 
 from app.models.health_checks import HealthCheck
 
@@ -67,3 +69,15 @@ class HealthCheckRepository:
             .order_by(HealthCheck.checked_at.desc())
             .first()
         )
+    
+    def delete_old_health_checks(self, retention_days: int) -> None:
+        cutoff = datetime.now(UTC) - timedelta(days=retention_days)
+
+        stmt = delete(HealthCheck).where(
+            HealthCheck.checked_at < cutoff
+        )
+
+        result = self.db.execute(stmt)
+        self.db.commit()
+
+        return result.rowcount

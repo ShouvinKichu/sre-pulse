@@ -5,6 +5,8 @@ from app.repositories.service_repository import ServiceRepository
 
 from app.services.health_checker import check_service
 
+from app.core.constants import RETENTION_DAYS
+
 from app.repositories.health_check_repository import HealthCheckRepository
 from app.models.health_checks import HealthCheck
 
@@ -50,6 +52,10 @@ async def monitor_services():
                     f"{result['status_code']} "
                     f"({result['response_time_ms']} ms)"
                 )
+            deleted = health_repo.delete_old_health_checks(RETENTION_DAYS)
+
+            if deleted > 0:
+                print(f"🧹 Deleted {deleted} old health checks")
 
         except Exception as e:
             print(f"❌ Worker crashed: {e}")
