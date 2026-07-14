@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: sre-pulse
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: sre-pulse
+
+  template:
+    metadata:
+      labels:
+        app: sre-pulse
+
+    spec:
+      containers:
+        - name: sre-pulse
+
+          image: sre-pulse:latest
+
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8000
+
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://postgres:password@postgres:5432/srepulse"
+
+            - name: DEBUG
+              value: "true"
