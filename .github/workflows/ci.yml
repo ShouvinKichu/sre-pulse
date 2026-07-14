@@ -10,12 +10,10 @@ on:
       - main
 
 jobs:
-  test:
-
+  ci:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -23,6 +21,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: "pip"
 
       - name: Install Dependencies
         run: |
@@ -31,10 +30,8 @@ jobs:
 
       - name: Run Ruff
         run: |
-          echo "Skipping Ruff for now"
+          ruff check .
 
       - name: Build Docker Image
         run: |
-          docker build -t sre-pulse .
-
-
+          docker build -t sre-pulse:latest .

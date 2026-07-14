@@ -1,18 +1,14 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
+from prometheus_client import make_asgi_app
 from scalar_fastapi import get_scalar_api_reference
 
-from contextlib import asynccontextmanager
-import asyncio
-
-from prometheus_client import make_asgi_app
+from app.routers import services
+from app.scheduler.worker import monitor_services
 
 metrics_app = make_asgi_app()
-
-from app.db import engine
-from app.models import Service, HealthCheck
-from app.routers import services
-
-from app.scheduler.worker import monitor_services
 
 
 @asynccontextmanager

@@ -1,10 +1,11 @@
-from app.config import settings
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
 from alembic import context
+from sqlalchemy import engine_from_config, pool
+
+from app.config import settings
+from app.db import Base
+import app.models  # noqa: F401
 
 config = context.config
 
@@ -15,9 +16,6 @@ config.set_main_option(
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
-
-from app.db import Base
-from app.models import Service, HealthCheck
 
 target_metadata = Base.metadata
 
