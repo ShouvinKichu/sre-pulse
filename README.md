@@ -1,7 +1,5 @@
 # SRE Pulse
 
-A production-inspired health monitoring platform built with FastAPI to demonstrate modern Site Reliability Engineering (SRE) practices.
-
 SRE Pulse continuously monitors registered services, stores historical health data, exposes Prometheus metrics, and visualizes operational insights through Grafana dashboards.
 
 The project focuses on core SRE concepts including asynchronous health monitoring, observability, containerization, Infrastructure as Code (Terraform), and CI/CD automation.
@@ -32,7 +30,7 @@ Modern production systems require continuous visibility into service health and 
 
 ![Prometheus Metrics](images/prometheus-timeseries.png)
 
-## ✨ Features
+## Features
 
 - 🔍 Continuous HTTP health monitoring
 - ⚡ Asynchronous background worker
@@ -48,7 +46,7 @@ Modern production systems require continuous visibility into service health and 
 
 ---
 
-## 🏗 Architecture
+## Architecture
 
 ```
                     +----------------+
