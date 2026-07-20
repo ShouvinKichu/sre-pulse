@@ -8,7 +8,7 @@ The project focuses on core SRE concepts including asynchronous health monitorin
 
 ## Why SRE Pulse?
 
-Modern production systems require continuous visibility into service health and performance. SRE Pulse was built to explore how monitoring platforms are designed—from collecting health checks and metrics to visualizing operational data—using a clean, extensible architecture inspired by real-world SRE workflows.
+Modern production systems require continuous visibility into service health and performance. SRE Pulse was built to explore how monitoring platforms are designed, from collecting health checks and metrics to visualizing operational data; using a clean, extensible architecture inspired by real-world SRE workflows.
 
 ---
 
