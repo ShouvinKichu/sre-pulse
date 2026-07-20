@@ -1,10 +1,36 @@
-# 🚀 SRE Pulse
+# SRE Pulse
 
-**SRE Pulse** is a production-inspired service monitoring platform built with FastAPI. It continuously monitors the health of configured services, stores historical health data, exposes Prometheus metrics, and visualizes them through Grafana dashboards.
+A production-inspired health monitoring platform built with FastAPI to demonstrate modern Site Reliability Engineering (SRE) practices.
 
-The project was built to demonstrate practical Site Reliability Engineering (SRE) and DevOps concepts including asynchronous monitoring, observability, containerization, Infrastructure as Code, and CI/CD.
+SRE Pulse continuously monitors registered services, stores historical health data, exposes Prometheus metrics, and visualizes operational insights through Grafana dashboards.
+
+The project focuses on core SRE concepts including asynchronous health monitoring, observability, containerization, Infrastructure as Code (Terraform), and CI/CD automation.
 
 ---
+
+## Why SRE Pulse?
+
+Modern production systems require continuous visibility into service health and performance. SRE Pulse was built to explore how monitoring platforms are designed—from collecting health checks and metrics to visualizing operational data—using a clean, extensible architecture inspired by real-world SRE workflows.
+
+---
+
+## Screenshots
+
+### Grafana Dashboard
+
+![Grafana Dashboard](images/grafana-dashboard.png)
+
+---
+
+### API Documentation
+
+![Scalar API](images/scalar-api.png)
+
+---
+
+### Prometheus Metrics
+
+![Prometheus Metrics](images/prometheus-timeseries.png)
 
 ## ✨ Features
 
@@ -41,7 +67,7 @@ The project was built to demonstrate practical Site Reliability Engineering (SRE
                     |   FastAPI      |
                     |----------------|
                     | REST API       |
-                    | Background Job |
+                    | Async Scheduler|
                     | Health Checker |
                     +-------+--------+
                             |
@@ -54,7 +80,7 @@ The project was built to demonstrate practical Site Reliability Engineering (SRE
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -73,7 +99,7 @@ The project was built to demonstrate practical Site Reliability Engineering (SRE
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 app/
@@ -99,7 +125,7 @@ requirements.txt
 
 ---
 
-## 🚀 Getting Started
+## Quick Start
 
 ### Clone the repository
 
@@ -160,7 +186,7 @@ docker compose up --build -d
 
 ---
 
-## 🌐 Services
+## Services
 
 | Service | URL |
 |---------|-----|
@@ -171,7 +197,7 @@ docker compose up --build -d
 
 ---
 
-## 📊 Monitoring
+## Monitoring
 
 SRE Pulse exports Prometheus metrics including:
 
@@ -195,7 +221,7 @@ srepulse_response_time_ms{service="Google"} 184
 
 ---
 
-## 📈 Grafana Dashboard
+## Grafana Dashboard
 
 The dashboard includes:
 
@@ -209,7 +235,7 @@ The dashboard includes:
 
 ---
 
-## 🔄 CI/CD
+## CI/CD
 
 GitHub Actions automatically performs:
 
@@ -222,7 +248,7 @@ The workflow runs on every push and pull request to `main`.
 
 ---
 
-## 🏗 Infrastructure
+## Infrastructure
 
 Terraform demonstrates Infrastructure as Code concepts and the standard workflow:
 
@@ -244,24 +270,35 @@ terraform destroy
 
 ---
 
-## 📌 Future Enhancements
+## Future Roadmap
 
+### Monitoring & Alerting
 - Email alerts
 - Slack / Discord notifications
+- Alert thresholds and escalation policies
+
+### Cloud Native
 - Kubernetes deployment
 - Google Kubernetes Engine (GKE)
-- Terraform cloud infrastructure
+- Cloud deployment with Terraform
+
+### Platform Features
 - Authentication & RBAC
 - Multi-region monitoring
-- Service discovery
+- Automatic service discovery
+
+### Reliability
+- Retry policies with exponential backoff
+- Configurable health check intervals
+- Historical availability reports (SLA/Uptime)
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Shouvin A**
 
-LinkedIn: https://linkedin.com/in/shouvin
+LinkedIn: [linkedin.com/in/shouvin](https://linkedin.com/in/shouvin)
 
 ---
 
